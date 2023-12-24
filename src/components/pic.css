@@ -1,0 +1,10 @@
+.pic {
+  width: 20%;
+  border: 1px solid black;
+}
+
+.pic-child {
+  width: 90%;
+  position: relative;
+  top: 10px;
+}

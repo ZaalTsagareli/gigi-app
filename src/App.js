@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import Picture from "./components/pic.component";
+import "./App.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [data, setData] = useState([]);
+
+  const getPictures = async () => {
+    try {
+      const response = await axios.get(
+        "https://jsonplaceholder.typicode.com/photos?_limit=4"
+      );
+      return response.data;
+    } catch (err) {
+      console.error(err);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const pictures = await getPictures();
+      console.log(pictures, "xd");
+      setData(pictures);
+    };
+
+    fetchData();
+  }, []); // Provide an empty dependency array
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="picture-container">
+        {data &&
+          data.map((pic) => {
+            return (
+              <Picture key={pic.id} title={pic.title} url={pic.url}></Picture>
+            );
+          })}
+      </div>
     </div>
   );
 }
